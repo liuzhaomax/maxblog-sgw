@@ -62,7 +62,7 @@ func (c *Consul) ServiceDiscover() error {
 		}
 		for _, service := range services {
 			if downstream.Name == service.ServiceName {
-				cfg.Downstreams[i].Addr = service.ServiceAddress
+				cfg.Downstreams[i].Addr = service.Address
 			}
 		}
 	}
