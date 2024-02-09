@@ -62,7 +62,7 @@ func (c *Consul) ServiceDiscover() error {
 		}
 		for _, service := range services {
 			if downstream.Name == service.ServiceName {
-				cfg.Downstreams[i].Addr = service.Address
+				cfg.Downstreams[i].Addr = fmt.Sprintf("http://%s:%d", service.ServiceAddress, service.ServicePort)
 			}
 		}
 	}
