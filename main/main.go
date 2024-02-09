@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"github.com/liuzhaomax/go-maxms/internal/app"
-	"github.com/liuzhaomax/go-maxms/internal/core"
+	"github.com/liuzhaomax/maxblog-sgw/internal/app"
+	"github.com/liuzhaomax/maxblog-sgw/internal/core"
 )
 
 func main() {

@@ -2,17 +2,17 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/liuzhaomax/go-maxms/internal/middleware"
-	"github.com/liuzhaomax/go-maxms/src/api_user/handler"
+	"github.com/liuzhaomax/maxblog-sgw/internal/middleware"
+	"github.com/liuzhaomax/maxblog-sgw/src/utils"
 )
 
-func Register(root *gin.RouterGroup, handler *handler.HandlerUser, mw *middleware.Middleware) {
-	root.GET("/login", handler.GetPuk)
-	root.POST("/login", handler.PostLogin)
+func Register(root *gin.RouterGroup, mw *middleware.Middleware) {
+	root.GET("/login", mw.ReverseProxy.Redirect(utils.UserMicroserviceName))
+	root.POST("/login", mw.ReverseProxy.Redirect(utils.UserMicroserviceName))
 	root.Use(mw.Auth.ValidateToken())
-	root.DELETE("/login", handler.DeleteLogin)
+	root.DELETE("/login", mw.ReverseProxy.Redirect(utils.UserMicroserviceName))
 	routerUser := root.Group("/users")
 	{
-		routerUser.GET("/:userID", handler.GetUserByUserID)
+		routerUser.GET("/:userID", mw.ReverseProxy.Redirect(utils.UserMicroserviceName))
 	}
 }

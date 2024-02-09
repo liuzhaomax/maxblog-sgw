@@ -69,7 +69,7 @@ func TestGetCallerFileAndLine(t *testing.T) {
 	}{
 		{
 			name: "测试返回函数位置",
-			want: fmt.Sprintf("\033[1;34m%s\033[0m\n", "D:/workspace/Github/go-maxms/internal/core/utils_test.go:75"),
+			want: fmt.Sprintf("\033[1;34m%s\033[0m\n", "D:/workspace/Github/maxblog-sgw/internal/core/utils_test.go:75"),
 		},
 	}
 	got := GetCallerFileAndLine(2)

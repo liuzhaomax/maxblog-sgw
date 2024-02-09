@@ -3,10 +3,9 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
-	"github.com/liuzhaomax/go-maxms/internal/middleware"
-	"github.com/liuzhaomax/go-maxms/internal/middleware/cors"
-	"github.com/liuzhaomax/go-maxms/src/api_user/handler"
-	"github.com/liuzhaomax/go-maxms/src/router"
+	"github.com/liuzhaomax/maxblog-sgw/internal/middleware"
+	"github.com/liuzhaomax/maxblog-sgw/internal/middleware/cors"
+	"github.com/liuzhaomax/maxblog-sgw/src/router"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
@@ -20,7 +19,6 @@ type API interface {
 
 type Handler struct {
 	Middleware         *middleware.Middleware
-	HandlerUser        *handler.HandlerUser
 	PrometheusRegistry *prometheus.Registry
 }
 
@@ -42,7 +40,7 @@ func (h *Handler) Register(app *gin.Engine) {
 		root.Use(h.Middleware.Validator.ValidateHeaders())
 		root.Use(h.Middleware.Auth.ValidateSignature())
 		// dynamic api
-		router.Register(root, h.HandlerUser, h.Middleware)
+		router.Register(root, h.Middleware)
 	}
 }
 

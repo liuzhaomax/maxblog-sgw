@@ -19,10 +19,10 @@ pipeline {
         harborUsername = "admin"
         harborPassword = "Harbor12345"
         harborAddress = "172.16.96.97:9002"
-        harborRepo = "go-maxms"
-        Container_port = "9999"
-        Host_port = "9999"
-        JobName = "go-maxms/main"
+        harborRepo = "maxblog-sgw"
+        Container_port = "9999" // 启用随机端口，会被赋值
+        Host_port = "9999" // 启用随机端口，会被赋值
+        JobName = "maxblog-sgw/main"
         DeploymentServerIP = "172.16.96.98"
     }
     // 流水线阶段
@@ -32,7 +32,7 @@ pipeline {
             steps {
                 echo "--------------------- Checkout Start ---------------------"
                 timeout(time: 3, unit: "MINUTES"){
-                    checkout([$class: "GitSCM", branches: [[name: "**"]], extensions: [], userRemoteConfigs: [[url: "https://github.com/liuzhaomax/go-maxms.git"]]])
+                    checkout([$class: "GitSCM", branches: [[name: "**"]], extensions: [], userRemoteConfigs: [[url: "https://github.com/liuzhaomax/maxblog-sgw.git"]]])
                 }
                 echo "--------------------- Checkout End ---------------------"
             }
@@ -170,10 +170,17 @@ pipeline {
             }
             steps {
                 echo "--------------------- Build Image Start ---------------------"
-                timeout(time: 5, unit: "MINUTES"){
-                    sh """
-                        docker build -t ${ProjectKey}:${TAG} .
-                    """
+                script {
+                    timeout(time: 5, unit: "MINUTES"){
+                        goHome = tool "go"
+                        // 随机端口部署，将查询到的随机空闲端口写入配置文件
+                        randomPort = sh(script: "${goHome}/bin/go run ./script/get_random_idle_port/main.go -e ${ENV}", returnStdout: true).trim()
+                        Container_port = randomPort
+                        Host_port = randomPort
+                        sh """
+                            docker build -t ${ProjectKey}:${TAG} .
+                        """
+                    }
                 }
                 echo "--------------------- Build Image End ---------------------"
             }
@@ -205,6 +212,7 @@ pipeline {
                 script {
                     timeout(time: 2, unit: "MINUTES") {
                         echo "ENV: ${ENV}"
+                        echo "Port: ${Host_port}"
                         sh """
                             chmod +x ./deploy.sh
                             ./deploy.sh $harborAddress $harborRepo $ProjectKey $TAG $Container_port $Host_port $ENV $DeploymentServerIP

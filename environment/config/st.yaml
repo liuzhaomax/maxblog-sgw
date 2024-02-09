@@ -1,12 +1,12 @@
 app:
-  name: go-maxms
+  name: maxblog-sgw
   version: 0.1
   domain: liuzhaomax.cn
   enabled:
     rsa: false # rsa和vault有关联关系
     vault: true
     signature: true # signature默认依赖于redis
-    random_port: false
+    random_port: ture
   white_list:
     -
       name: frontend
@@ -29,7 +29,7 @@ lib:
     max_life_time: 8192
     max_open_conns: 100000
     max_idle_conns: 1000
-    name: go_maxms
+    name: maxblog
     params: charset=utf8mb4&parseTime=True&loc=Local
     username: root
     password: 123456
@@ -61,7 +61,7 @@ lib:
 
 server:
   protocol: http
-  host: 0.0.0.0
+  host: 172.16.96.98
   port: 9999
   base_url: /
   read_timeout: 5 # seconds
@@ -70,4 +70,5 @@ server:
   shutdown_timeout: 10
 
 downstreams:
-  - name: go-maxms-be
+  - name: maxblog-user
+    addr: http://172.16.96.98:9801
