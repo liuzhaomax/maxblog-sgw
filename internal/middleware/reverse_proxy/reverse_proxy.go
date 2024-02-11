@@ -25,7 +25,7 @@ func (rp *ReverseProxy) Redirect(serviceName string) gin.HandlerFunc {
 		var addr string
 		for _, downstream := range cfg.Downstreams {
 			if downstream.Name == serviceName {
-				addr = downstream.Addr
+				addr = fmt.Sprintf("http://%s:%s", downstream.Endpoint.Host, downstream.Endpoint.Port)
 				break
 			}
 		}
@@ -36,7 +36,7 @@ func (rp *ReverseProxy) Redirect(serviceName string) gin.HandlerFunc {
 		}
 		proxy := httputil.NewSingleHostReverseProxy(proxyUrl)
 		rp.GenOkMsg(c, fmt.Sprintf("反向代理到: %s, 地址: %s", serviceName, addr))
-		err = core.SetHeadersForDownstream(c, cfg.Downstreams[0].Name, rp.RedisClient)
+		err = core.SetHeadersForDownstream(c, serviceName, rp.RedisClient)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusForbidden, rp.GenErrMsg(c, "反向代理请求头设置失败", err))
 			return

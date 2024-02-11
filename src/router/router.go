@@ -9,10 +9,10 @@ import (
 func Register(root *gin.RouterGroup, mw *middleware.Middleware) {
 	root.GET("/login", mw.ReverseProxy.Redirect(utils.UserMicroserviceName))
 	root.POST("/login", mw.ReverseProxy.Redirect(utils.UserMicroserviceName))
-	root.Use(mw.Auth.ValidateToken())
 	root.DELETE("/login", mw.ReverseProxy.Redirect(utils.UserMicroserviceName))
 	routerUser := root.Group("/users")
 	{
-		routerUser.GET("/:userID", mw.ReverseProxy.Redirect(utils.UserMicroserviceName))
+		routerUser.Use(mw.Auth.ValidateToken())
+		routerUser.Any("/*url", mw.ReverseProxy.Redirect(utils.UserMicroserviceName))
 	}
 }

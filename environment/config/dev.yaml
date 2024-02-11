@@ -71,4 +71,7 @@ server:
 
 downstreams:
   - name: maxblog-user
+    endpoint:
+      host: 172.30.64.1
+      port: 9801
     addr: http://172.30.64.1:9801
