@@ -74,4 +74,4 @@ downstreams:
     endpoint:
       host: 172.21.240.1
       port: 9801
-    addr: http://172.30.64.1:9801
+    addr: http://172.21.240.1:9801
