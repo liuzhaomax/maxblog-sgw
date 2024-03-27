@@ -10,8 +10,11 @@ app:
     service_discovery: false
   white_list:
     -
-      name: frontend
-      domain: http://127.0.0.1:9100
+      name: main_fe
+      domain: http://127.0.0.1:3000
+    -
+      name: admin_fe
+      domain: http://127.0.0.1:3001
 
 lib:
   log:

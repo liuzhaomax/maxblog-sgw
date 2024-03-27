@@ -10,8 +10,11 @@ app:
     service_discovery: true
   white_list:
     -
-      name: frontend
-      domain: http://172.16.96.98:9100
+      name: main_fe
+      domain: http://172.16.96.98:3000
+    -
+      name: admin_fe
+      domain: http://172.16.96.98:3001
 
 lib:
   log:
