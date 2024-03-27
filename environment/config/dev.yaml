@@ -1,7 +1,7 @@
 app:
   name: maxblog-sgw
   version: 0.1
-  domain: liuzhaomax.cn
+  domain: localhost
   enabled:
     rsa: false # rsa和vault有关联关系
     vault: true
@@ -11,10 +11,10 @@ app:
   white_list:
     -
       name: main_fe
-      domain: http://127.0.0.1:3000
+      domain: http://localhost:3000
     -
       name: admin_fe
-      domain: http://127.0.0.1:3001
+      domain: http://localhost:3001
 
 lib:
   log:
