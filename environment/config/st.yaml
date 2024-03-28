@@ -6,7 +6,7 @@ app:
     rsa: false # rsa和vault有关联关系
     vault: true
     signature: true # signature默认依赖于redis
-    random_port: true
+    random_port: false
     service_discovery: true
   white_list:
     -
